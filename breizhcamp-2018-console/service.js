@@ -22,7 +22,8 @@ exports.init = function(callback) {
     
 });
 
+}
 
-
-
+exports.listerSessions = function(callback) {
+    callback(talks)
 }

@@ -27,7 +27,9 @@ var saisieUser = function(saisie) {
                 rl.question(questionPosee, saisieUser) 
 
             case '2' :
-                service.listerSessions(callback)
+                service.listerSessions(function(nbSessions){
+                    console.log('[sessions]', nbSessions)
+                })
                 rl.question(questionPosee, saisieUser) 
 
             case '99' :
@@ -37,4 +39,4 @@ var saisieUser = function(saisie) {
                 console.log('oooooops ')
         }
 }
-rl.question(questionPosee, saisieFunction)
+rl.question(questionPosee, saisieUser)
