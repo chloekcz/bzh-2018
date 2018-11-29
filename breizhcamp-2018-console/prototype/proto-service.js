@@ -1,4 +1,4 @@
-var service = require('../service')
+const service = require('../service')
 
 
 

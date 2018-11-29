@@ -1,42 +1,79 @@
-var service = require('./service')
-var readline = require('readline')
+let Service = require('./service')
+const readline = require('readline')
 
 
-/*
+
+const serv = new Service()
+
+
+
 exports.start = function() {
-    service.init(function(nb) {
-        console.log('[init]', nb, 'sessions trouvées.')
+
+    // Créer un menu
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
     })
-}
-*/
 
-// Créer un menu
-var rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout
-})
 
-var questionPosee = '*****************\r\n 1. Rafraichir les données \r\n 2. Lister les données \r\n 99. Quitter \r\n'
+const questionPosee = '*****************\r\n 1. Rafraichir les données \r\n 2. Lister les données \r\n\ 3. Lister les présentateurs \r\n 4. Rechercher une session \r\n 99. Quitter \r\n'
 
-var saisieUser = function(saisie) {
+let saisieUser = function(saisie) {
+
+
+// Méthode avec switch
         switch(saisie) {
             case '1' :
-                service.init(function(nb) {
-                    console.log('[init]', nb, 'sessions trouvées.')
-                })
-                rl.question(questionPosee, saisieUser) 
-
+                serv.init() 
+                    .then(nb => console.log('[init]', nb, 'sessions trouvées.'))
+                     rl.question(questionPosee, saisieUser) 
+                     break;
             case '2' :
-                service.listerSessions(function(nbSessions){
-                    console.log('[sessions]', nbSessions)
-                })
-                rl.question(questionPosee, saisieUser) 
+                serv.listerSessions() 
+                    .then(talks => {
+                        talks.forEach(uneSession => console.log(uneSession.name))
+                        rl.question(questionPosee, saisieUser) 
+                    })
+                    break;
+
+            case '3' :
+                serv.listerPresentateur()
+                    .then(talks => {
+                        talks.forEach(unPresentateur => console.log(unPresentateur.speakers))
+                        rl.question(questionPosee, saisieUser)
+                    })
+                break;
+
+            case '4' : 
+                    serv.rechercherPresentateur()
+
+                    rl.question(questionPosee, saisieUser)
 
             case '99' :
                 rl.close()
                 break;
-            default :
-                console.log('oooooops ')
         }
 }
-rl.question(questionPosee, saisieUser)
+    // Méthode avec 'if'
+ /*   if(`${saisie}`== 1) {
+        serv.init() 
+        .then(nb => console.log('[init]', nb, 'sessions trouvées.'))
+        rl.question(questionPosee, saisieUser) 
+
+    } else if(`${saisie}` == 2) {
+        serv.listerSessions() 
+        .then(talks => {
+            talks.forEach(uneSession => console.log(uneSession.name))
+            rl.question(questionPosee, saisieUser) 
+        })
+       
+
+    } else if(`${saisie}` == 99) {
+        rl.close()
+    }
+
+}*/
+
+rl.question(questionPosee, saisieUser) 
+
+}

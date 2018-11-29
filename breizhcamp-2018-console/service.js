@@ -1,11 +1,44 @@
-var request = require('request')
+const request = require('request-promise-native')
 
 // tableau qui contiendra toutes les sessions du BreizhCamp
-var talks = []
+ 
+// Faire une classe service
+// Méthode sans callback
+module.exports = class Service {
+
+    constructor() {
+        this.talks = []
+    }
+
+    init() {
+        return Promise.all(
+            [
+                'http://2018.breizhcamp.org/json/others.json',
+                'http://2018.breizhcamp.org/json/talks.json'
+            ]
+            .map(url => request(url, {json : true})))
+            .then( tabResult => {
+                this.talks = tabResult[0].concat(tabResult[1])
+                return this.talks.length
+            })
+    }
+
+    listerSessions() {
+        return Promise.resolve(this.talks)
+    }
+
+    listerPresentateur() {
+        return Promise.resolve(this.talks)
+    }
+
+    rechercherPresentateur() {
+        
+    }
+}
 
 
-
-exports.init = function(callback) {
+// Méthode avec callback
+/* exports.init = function(callback) {
     // TODO         => effectuer les requêtes HTTP permettant de récupérer les données du BreizhCamp
     request('http://2018.breizhcamp.org/json/others.json', { json: true }, function(err, res, body) {
     talks = talks.concat(body)
@@ -20,10 +53,12 @@ exports.init = function(callback) {
     });
 
     
-});
+    });
 
-}
+} */
 
+
+// Lister les sessions
 exports.listerSessions = function(callback) {
     callback(talks)
 }
